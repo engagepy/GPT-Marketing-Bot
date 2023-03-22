@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Marketing Expert Chatbot</title>
+    <style>
+        body {
+            background-color: black;
+            font-family: "Arial", sans-serif;
+            color: white;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            margin: 0;
+        }
+        #chat-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            max-width: 800px;
+            padding: 1rem;
+        }
+        #conversation {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+            border: 2px solid #00ff00;
+            border-radius: 8px;
+            padding: 1rem;
+            width: 90%;
+            max-height: 400px;
+            overflow-y: auto;
+            margin-bottom: 1rem;
+        }
+        #loading {
+            display: none;
+        }
+        input {
+            width: 80%;
+            padding: 0.5rem;
+            border: none;
+            border-radius: 8px;
+            outline: none;
+        }
+        button {
+            cursor: pointer;
+            padding: 0.5rem 1rem;
+            border: none;
+            border-radius: 8px;
+            background-color: #00ff00;
+            color: black;
+            font-weight: bold;
+            margin-left: 1rem;
+        }
+        .assistant, .user {
+            display: inline-block;
+            background-color: #222;
+            border-radius: 8px;
+            padding: 0.5rem 1rem;
+            margin: 0.5rem 0;
+        }
+        .assistant::before {
+            content: "Assistant: ";
+            font-weight: bold;
+        }
+        .user::before {
+            content: "You: ";
+            font-weight: bold;
+        }
+    </style>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+        $(document).ready(function() {
+            function addMessage(role, content) {
+                const messageElem = $('<div>').addClass(role).text(content);
+                $('#conversation').append(messageElem);
+            }
+
+            function setLoading(loading) {
+                if (loading) {
+                    $('#loading').show();
+                    $('#send-message').prop('disabled', true);
+                } else {
+                    $('#loading').hide();
+                    $('#send-message').prop('disabled', false);
+                }
+            }
+
+            $('#send-message').on('click', function() {
+                const message = $('#message-input').val().trim();
+                if (!message) return;
+
+                addMessage('user', message);
+                setLoading(true);
+
+                $.ajax({
+                    url: '/chat',
+                    method: 'POST',
+                    contentType: 'application/json',
+                    data: JSON.stringify({ message }),
+                    success: function(response) {
+                        addMessage('assistant', response.message);
+                    },
+                    error: function() {
+                        addMessage('assistant', 'Error processing your request.');
+                    },
+                    complete: function() {
+                        setLoading(false);
+                        $('#message-input').val('');
+                    }
+                });
+            });
+        });
+    </script>
+</head>
+<body>
+    <h1>Marketing Expert Chatbot</h1>
+    <div id="conversation"></div>
+    <input type="text" id="user-input" placeholder="Type your message here..." autocomplete="off">
+    <button id="send-btn">Send</button>
+    <div id="loading">Loading...</div>
+
+    <script>
+        $(document).ready(function () {
+            function appendMessage(role, content) {
+                $("#conversation").append(`<div><b>${role}:</b> ${content}</div>`);
+            }
+
+            $("#send-btn").on("click", function () {
+                var userInput = $("#user-input").val().trim();
+
+                if (!userInput) {
+                    return;
+                }
+
+                appendMessage("User", userInput);
+                $("#user-input").val("");
+
+                $("#send-btn").prop("disabled", true);
+                $("#loading").show();
+
+                $.ajax({
+                    url: "/chat",
+                    type: "POST",
+                    contentType: "application/json",
+                    data: JSON.stringify({ message: userInput }),
+                    success: function (response) {
+                        appendMessage("Assistant", response.message);
+                    },
+                    complete: function () {
+                        $("#send-btn").prop("disabled", false);
+                        $("#loading").hide();
+                        $("#conversation").scrollTop($("#conversation")[0].scrollHeight);
+                    }
+                });
+            });
+
+            $("#user-input").on("keypress", function (e) {
+                if (e.which === 13) {
+                    $("#send-btn").click();
+                }
+            });
+        });
+    </script>
+</body>
