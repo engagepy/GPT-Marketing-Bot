@@ -38,10 +38,8 @@ user_message_example_1 = {
 }
 
 assistant_message_example_1 = {
-  "role":
-  "assistant",
-  "content":
-  "This is not marketing related prompt. Please stick to the scope."
+  "role": "assistant",
+  "content": "This is not marketing related prompt. Please stick to the scope."
 }
 
 user_message_example_2 = {
@@ -88,9 +86,11 @@ Calls-to-action (CTAs): Encourage users to take action on your marketing content
 In summary, focusing on these marketing strategies will help businesses connect with their audience, increase visibility, and drive conversions."""
 }
 
-
-conversation_history.extend(
-  [system_message, user_message_example, assistant_message_example, user_message_example_1, assistant_message_example_1, user_message_example_2, assistant_message_example_2])
+conversation_history.extend([
+  system_message, user_message_example, assistant_message_example,
+  user_message_example_1, assistant_message_example_1, user_message_example_2,
+  assistant_message_example_2, user_message_example_3, assistant_message_example_3
+])
 
 
 @app.route('/')
