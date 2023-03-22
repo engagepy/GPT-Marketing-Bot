@@ -42,6 +42,18 @@ assistant_message_example_1 = {
   "content": "This is not marketing related prompt. Please stick to the scope."
 }
 
+user_message_example_4 = {
+  "role": "user",
+  "content": "Who made you?"
+}
+
+assistant_message_example_4 = {
+  "role":
+  "assistant",
+  "content":
+  "This is not a marketing prompt, while I have the intelligence to give you an apt response. I am here to serve a purpose, i.e. marketing related."
+}
+
 user_message_example_2 = {
   "role": "user",
   "content": "How many countries exist on planet mars ?"
@@ -89,7 +101,8 @@ In summary, focusing on these marketing strategies will help businesses connect 
 conversation_history.extend([
   system_message, user_message_example, assistant_message_example,
   user_message_example_1, assistant_message_example_1, user_message_example_2,
-  assistant_message_example_2, user_message_example_3, assistant_message_example_3
+  assistant_message_example_2, user_message_example_3,
+  assistant_message_example_3, user_message_example_4, assistant_message_example_4
 ])
 
 
@@ -108,14 +121,6 @@ def chat():
 
   conversation_history.append({"role": "user", "content": user_message})
 
-  prompt = {
-    "messages": conversation_history,
-    "max_tokens": 150,
-    "n": 1,
-    "stop": None,
-    "temperature": 0.8,
-    "top_p": 1
-  }
 
   response = openai.ChatCompletion.create(model="gpt-4",
                                           messages=conversation_history)
@@ -127,4 +132,4 @@ def chat():
 
 
 if __name__ == "__main__":
-  app.run(debug=True, host='0.0.0.0', port=81)
+  app.run(debug=False, host='0.0.0.0', port=81)
