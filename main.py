@@ -2,6 +2,10 @@ import os
 import openai
 from flask import Flask, request, jsonify, send_from_directory
 from flask_cors import CORS
+import tiktoken
+
+encoding = tiktoken.encoding_for_model("gpt-4")
+
 
 # Set up OpenAI API key
 openai.api_key = os.environ["OPENAI_API_KEY"]
@@ -11,6 +15,26 @@ CORS(app)
 
 # Initialize conversation history
 conversation_history = []
+
+def reset_history_if_needed():
+    global conversation_history
+
+    total_tokens = 0
+    for message in conversation_history:
+        try:
+            tokens = encoding.encode(message["content"])
+            total_tokens += len(tokens)
+            
+        except tiktoken.TokenizerException:
+            pass
+
+    if total_tokens > 600:
+        conversation_history.clear()
+        conversation_history.append(system_message)
+        print("Cleared Conversation History Just Now")
+
+    
+    print("Token = " + total_tokens)
 
 # Primer prompts
 system_message = {
@@ -127,6 +151,8 @@ def chat():
 
   ai_message = response['choices'][0]['message']['content'].strip()
   conversation_history.append({"role": "assistant", "content": ai_message})
+
+  reset_history_if_needed()
 
   return jsonify({"message": ai_message})
 

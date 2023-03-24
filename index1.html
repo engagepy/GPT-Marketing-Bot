@@ -75,22 +75,22 @@
     <script>
         $(document).ready(function() {
             function addMessage(role, content) {
-                const messageElem = $('<div>').addClass(role).text(content);
+                const messageElem = $('<div>').addClass(role).html(content.replace(/(\d+\.)/g, '<br>$1'));
                 $('#conversation').append(messageElem);
             }
 
             function setLoading(loading) {
                 if (loading) {
                     $('#loading').show();
-                    $('#send-message').prop('disabled', true);
+                    $('#send-btn').prop('disabled', true);
                 } else {
                     $('#loading').hide();
-                    $('#send-message').prop('disabled', false);
+                    $('#send-btn').prop('disabled', false);
                 }
             }
 
-            $('#send-message').on('click', function() {
-                const message = $('#message-input').val().trim();
+            $('#send-btn').on('click', function() {
+                const message = $('#user-input').val().trim();
                 if (!message) return;
 
                 addMessage('user', message);
@@ -115,62 +115,61 @@
             });
         });
     </script>
-</head>
+
+  </head>
 <body>
-    <h1 style="color:deepskyblue" >GlobalMarketing.AI</h1>
+    <h1 style="color:deepskyblue">GlobalMarketing.AI</h1><br><br>
     <div id="conversation"></div>
     <input type="text" id="user-input" placeholder="Enter your prompt here..." autocomplete="off">
+<br>
+<button id="send-btn">Send</button>
   <br>
-    <button id="send-btn">Send</button>
-    <div id="loading" style="color:deepskyblue">Loading...</div>
+<div id="loading" style="color:orange"> &nbsp;&nbsp;&nbsp; Loading 🚀</div>
 
   <p align="center" class = bg-dark style = "color: #14cff5" >
    <strong>-</strong> Powered by ZP
    | Made in 🇮🇳
     <script>
-
-      
         $(document).ready(function () {
             function appendMessage(role, content) {
-                $("#conversation").append(`<div><b>${role}:</b> ${content}</div><br>`);
+                $("#conversation").append(`<div><b>${role}:</b> ${content.replace(/(\d+\.)/g, '<br>$1')}</div><br>`);
+            }
+          $("#send-btn").on("click", function () {
+            var userInput = $("#user-input").val().trim();
+
+            if (!userInput) {
+                return;
             }
 
-            $("#send-btn").on("click", function () {
-                var userInput = $("#user-input").val().trim();
+            
+            $("#user-input").val("");
 
-                if (!userInput) {
-                    return;
-                }
+            $("#send-btn").prop("disabled", true);
+            $("#loading").show();
 
-                appendMessage("User", userInput);
-                $("#user-input").val("");
+            $.ajax({
+                url: "/chat",
+                type: "POST",
+                contentType: "application/json",
+                data: JSON.stringify({ message: userInput }),
+                success: function (response) {
+                    
+                },
 
-                $("#send-btn").prop("disabled", true);
-                $("#loading").show();
-
-                $.ajax({
-                    url: "/chat",
-                    type: "POST",
-                    contentType: "application/json",
-                    data: JSON.stringify({ message: userInput }),
-                    success: function (response) {
-                        appendMessage("Assistant", response.message);
-                    },
-
-                  
-                    complete: function () {
-                        $("#send-btn").prop("disabled", false);
-                        $("#loading").hide();
-                        $("#conversation").scrollTop($("#conversation")[0].scrollHeight);
-                    }
-                });
-            });
-
-            $("#user-input").on("keypress", function (e) {
-                if (e.which === 13) {
-                    $("#send-btn").click();
+                complete: function () {
+                    $("#send-btn").prop("disabled", false);
+                    $("#loading").hide();
+                    $("#conversation").scrollTop($("#conversation")[0].scrollHeight);
                 }
             });
         });
-    </script>
+
+        $("#user-input").on("keypress", function (e) {
+            if (e.which === 13) {
+                $("#send-btn").click();
+            }
+        });
+    });
+</script>
 </body>
+</html>
