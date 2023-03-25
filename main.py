@@ -28,13 +28,13 @@ def reset_history_if_needed():
         except tiktoken.TokenizerException:
             pass
 
-    if total_tokens > 600:
+    if total_tokens > 8000:
         conversation_history.clear()
         conversation_history.append(system_message)
         print("Cleared Conversation History Just Now")
 
     
-    print("Token = " + total_tokens)
+    print("Token = " + str(total_tokens))
 
 # Primer prompts
 system_message = {
