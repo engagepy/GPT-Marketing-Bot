@@ -4,6 +4,10 @@
     <meta charset="UTF-8">
     <meta charset="utf-8">
     <meta name = "viewport" content = "width=device-width, minimum-scale=1.0, maximum-scale = 1.0, user-scalable = no">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700&display=swap" rel="stylesheet">
+
     <title>Global Marketing AI</title>
 <style>
     body {
@@ -17,6 +21,97 @@
         height: 100vh;
         margin: 0;
     }
+
+  input {
+    width: 80%;
+    padding: 0.5rem;
+    border: none;
+    border-radius: 8px;
+    outline: none;
+    background-image: linear-gradient(90deg, #222, #333);
+    color: #f0f0f0;
+    font-family: "Orbitron", sans-serif;
+    font-weight: 500;
+    font-size: 1rem;
+    transition: background-image 0.3s ease;
+}
+
+input:focus {
+    background-image: linear-gradient(90deg, #333, #222);
+}
+  
+This updated CSS rule applies the same gradient background as the <h1> tag and the button, and also uses the "Orbitron" font. Additionally, it adds
+
+
+
+.banner-container {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    max-height: 200px; /* Adjust this value to change the banner height */
+    overflow: hidden;
+}
+
+
+  h1 {
+    font-family: "Orbitron", sans-serif;
+    font-weight: 500;
+    font-size: 2rem;
+    background-image: linear-gradient(90deg, #14cff5, #009efb);
+    -webkit-background-clip: text;
+    -moz-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    text-shadow: 2px 2px 2px rgba(0, 0, 0, 0.2);
+    margin-bottom: 1rem;
+    text-align: center;
+    }
+  
+    h1 span {
+      color: white;
+    }
+  
+  a { color: #FF0000; }
+
+  
+  h3 {
+    font-family: "Orbitron", sans-serif;
+    font-weight: 200;
+    font-size: 0.8rem;
+    link-color: white;
+    background-image: linear-gradient(90deg, #14cff5, #009efb);
+    -webkit-background-clip: text;
+    -moz-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    text-shadow: 2px 2px 2px rgba(0, 0, 0, 0.2);
+    margin-bottom: 1rem;
+    text-align: center;
+    }
+  
+    h3 span {
+      color: white;
+    }
+
+  h5 {
+    font-family: "Orbitron", sans-serif;
+    font-weight: 200;
+    font-size: .9rem;
+    background-image: linear-gradient(90deg, #14cff5, #009efb);
+    -webkit-background-clip: text;
+    -moz-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    text-shadow: 2px 2px 2px rgba(0, 0, 0, 0.2);
+    margin-bottom: 1rem;
+    text-align: center;
+    }
+  
+    h5 span {
+      color: white;
+    }
+
     #chat-container {
         display: flex;
         flex-direction: column;
@@ -24,18 +119,20 @@
         max-width: 800px;
         padding: 1rem;
     }
-    #conversation {
-        display: flex;
-        flex-direction: column;
-        align-items: flex-start;
-        border: 2px solid #14cff5;
-        border-radius: 8px;
-        padding: 1rem;
-        width: 90%;
-        max-height: 400px;
-        overflow-y: auto;
-        margin-bottom: 1rem;
-    }
+  
+   #conversation {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    border: 2px solid #14cff5;
+    border-radius: 8px;
+    padding: 1rem;
+    width: 90%;
+    height: 400px; /* Add this line to fix the height */
+    overflow-y: auto;
+    margin-bottom: 1rem;
+}
+
     #loading {
         display: none;
     }
@@ -49,15 +146,24 @@
         color: #f0f0f0;
     }
     button {
-        cursor: pointer;
-        padding: 0.5rem 1rem;
-        border: none;
-        border-radius: 8px;
-        background-color: #14cff5;
-        color: white;
-        font-weight: bold;
-        margin-left: 1rem;
-    }
+    cursor: pointer;
+    padding: 0.5rem 1rem;
+    border: none;
+    border-radius: 8px;
+    background-image: linear-gradient(90deg, #14cff5, #009efb);
+    color: white;
+    font-family: "Orbitron", sans-serif;
+    font-weight: 500;
+    font-size: 1rem;
+    text-shadow: 1px 1px 1px rgba(0, 0, 0, 0.2);
+    margin-left: 1rem;
+    transition: background-image 0.3s ease;
+}
+
+button:hover {
+    background-image: linear-gradient(90deg, #009efb, #14cff5);
+}
+
     .assistant, .user {
         display: inline-block;
         background-color: #333;
@@ -136,8 +242,19 @@
     </script>
 </head>
 <body>
-    <h1 style="color:deepskyblue" >GlobalMarketing.<strong style="color:white">AI</strong></h1>
-  <h3>GPT-4 fine-tuned for Marketing needs. </h3>
+  <div style="width: 100%; display: flex; justify-content: center;">
+    <h1>GlobalMarketing<span>.AI</span></h1>
+  </div>
+
+
+
+     <div class="banner-container" style="width: 100%; display: flex; justify-content: center;">
+      <img src="static/Home.png" alt="AI Banner" style="max-width: 800px; width: 100%;" />
+    </div>
+
+  <div style="width: 100%; display: flex; justify-content: center;">
+    <h3>Generate marketing plans, localised research, Ad copy and <span>more.</span></h3>
+  </div>
     <div id="conversation"></div>
     <input type="text" id="user-input" placeholder="Enter your prompt here..." autocomplete="off">
   <br>
@@ -145,9 +262,9 @@
   <br><br>
     <div id="loading" style="color:orange"><h3>Loading <span class="rocket">🚀</span></h3></div>
 
-
+ <h5><strong>-</strong> Powered by <span> <a href="https://astratechz.com">Astra Techz</a></span></h5>🇮🇳
   <p align="center" class = bg-dark style = "color: #14cff5" >
-   <strong>-</strong> Powered by <a href="https://astratechz.com" style="color:coral">Astra Techz</a> | Made in 🇮🇳
+   
     <script>
 
       
