@@ -132,7 +132,7 @@ conversation_history.extend([
 
 @app.route('/')
 def index():
-  return send_from_directory(".", "index.html")
+  return send_from_directory(".", "index_main.html")
 
 
 @app.route('/chat', methods=['POST'])
