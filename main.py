@@ -146,7 +146,7 @@ def chat():
   conversation_history.append({"role": "user", "content": user_message})
 
 
-  response = openai.ChatCompletion.create(model="gpt-4",
+  response = openai.ChatCompletion.create(model="gpt-3.5-turbo",
                                           messages=conversation_history)
 
   ai_message = response['choices'][0]['message']['content'].strip()
