@@ -185,59 +185,60 @@
 
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
   <script>
-      $(document).ready(function() {
-          function appendMessage(role, content) {
-              if (role === "User") {
-                  $("#conversation").append(`<div><b>${role}:</b> ${content.replace(/(\d+\.)/g, '<br>$1')}</div><br>`);
-                  $('#conversation').scrollTop($('#conversation')[0].scrollHeight);
-              } else {
-                  const typingElem = $('<div>').html(`<b>${role}:</b> `);
-                  $("#conversation").append(typingElem);
-                  let i = 0;
-                  const typingInterval = setInterval(() => {
-                      if (i < content.length) {
-                          typingElem.append(content[i]);
-                          i++;
-                          $('#conversation').scrollTop($('#conversation')[0].scrollHeight);
-                      } else {
-                          clearInterval(typingInterval);
-                          $("#conversation").append('<br>');
-                      }
-                  }, 50);
-              }
-          }
+    $(document).ready(function() {
+        function appendMessage(role, content) {
+            if (role === "User") {
+                $("#conversation").append(`<div><b>${role}:</b> ${content.replace(/(\d+\.)/g, '<br>$1')}</div><br>`);
+                $('#conversation').scrollTop($('#conversation')[0].scrollHeight);
+            } else {
+                const typingElem = $('<div>').html(`<b>${role}:</b> `);
+                $("#conversation").append(typingElem);
+                let i = 0;
+                const typingInterval = setInterval(() => {
+                    if (i < content.length) {
+                        typingElem.append(content[i]);
+                        i++;
+                        $('#conversation').scrollTop($('#conversation')[0].scrollHeight);
+                    } else {
+                        clearInterval(typingInterval);
+                        $("#conversation").append('<br>');
+                    }
+                }, 50);
+            }
+        }
 
-          $("#send-btn").on("click", function() {
-              const userInput = $("#user-input").val().trim();
+        $('#send-btn').on('click', function() {
+            const userInput = $('#user-input').val().trim();
 
-              if (!userInput) return;
+            if (!userInput) return;
 
-              appendMessage("User", userInput);
-              $("#user-input").val('');
-              $("#send-btn").prop("disabled", true);
+            appendMessage("User", userInput);
+            $('#user-input').val('');
 
-              $.ajax({
-                  url: "/chat",
-                  type: "POST",
-                  contentType: "application/json",
-                  data: JSON.stringify({
-                      message: userInput
-                  }),
-                  success: function(response) {
-                      appendMessage("Assistant", response.message);
-                  },
-                  complete: function() {
-                      $("#send-btn").prop("disabled", false);
-                  }
-              });
-          });
+            $('#send-btn').addClass('glowing'); // Add glowing effect on click
 
-          $("#user-input").on("keypress", function(e) {
-              if (e.which === 13) {
-                  $("#send-btn").click();
-              }
-          });
-      });
+            $.ajax({
+                url: '/chat',
+                type: 'POST',
+                contentType: 'application/json',
+                data: JSON.stringify({ message: userInput }),
+                success: function(response) {
+                    appendMessage("Assistant", response.message);
+                },
+                complete: function() {
+                    $('#send-btn').removeClass('glowing'); // Remove glowing effect after response
+                    $('#send-btn').prop('disabled', false);
+                }
+            });
+        });
+
+        $('#user-input').on('keypress', function(e) {
+            if (e.which === 13) {
+                $('#send-btn').click();
+            }
+        });
+    });
+
   </script>
 </head>
 <body>
@@ -255,49 +256,5 @@
      | Tuned in 🇮🇳
   </p>
 
-    <script>
-
-      
-        $(document).ready(function () {
-            function appendMessage(role, content) {
-                $("#conversation").append(`<div><b>${role}:</b> ${content.replace(/(\d+\.)/g, '<br>$1')}</div><br>`);
-            }
-          $("#send-btn").on("click", function () {
-            var userInput = $("#user-input").val().trim();
-
-            if (!userInput) {
-                return;
-            }
-
-                appendMessage("User", userInput);
-                $("#user-input").val("");
-
-                $("#send-btn").prop("disabled", true);
-                $("#loading").show();
-
-                $.ajax({
-                    url: "/chat",
-                    type: "POST",
-                    contentType: "application/json",
-                    data: JSON.stringify({ message: userInput }),
-                    success: function (response) {
-                        appendMessage("Assistant", response.message);
-                    },
-
-                  
-                    complete: function () {
-                        $("#send-btn").prop("disabled", false);
-                        $("#loading").hide();
-                        $("#conversation").scrollTop($("#conversation")[0].scrollHeight);
-                    }
-                });
-            });
-
-            $("#user-input").on("keypress", function (e) {
-                if (e.which === 13) {
-                    $("#send-btn").click();
-                }
-            });
-        });
-    </script>
+    
 </body>
