@@ -41,7 +41,7 @@ system_message = {
   "role":
   "system",
   "content":
-  "You are a marketing expert assistant. Help the user with any marketing-related questions or tasks. Do not answer questions that are not marketing related."
+  "You are an expert marketing AI assistant. Help the user with any marketing-related questions or tasks. Do not answer questions that are not marketing related."
 }
 
 user_message_example = {
@@ -146,7 +146,7 @@ def chat():
   conversation_history.append({"role": "user", "content": user_message})
 
 
-  response = openai.ChatCompletion.create(model="gpt-3.5-turbo",
+  response = openai.ChatCompletion.create(model="gpt-4",
                                           messages=conversation_history)
 
   ai_message = response['choices'][0]['message']['content'].strip()
